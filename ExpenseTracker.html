@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: #0b0f19;
+            color: #f1f5f9;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100%;
+            background: linear-gradient(135deg, #0b0f19, #111827);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Main Heading */
+        .container>h1 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+        .container>p {
+            color: #94a3b8;
+            margin-top: -18px;
+            font-size: 15px;
+        }
+
+        /* All Sections */
+        .container section {
+            background: #151c2c;
+            border: 1px solid #283449;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .container section h2 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        /* Total Balance */
+        .container section:first-of-type {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            border: none;
+            padding: 30px;
+        }
+
+        .container section:first-of-type h2 {
+            color: #dbeafe;
+        }
+
+        .container section:first-of-type p {
+            font-size: 38px;
+            font-weight: 800;
+            color: white;
+        }
+
+        /* Income and Expense Cards */
+        .container section:nth-of-type(2) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .container section:nth-of-type(2)>div {
+            background: #151c2c;
+            border: 1px solid #283449;
+            border-radius: 18px;
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .container section:nth-of-type(2)>div:hover {
+            transform: translateY(-4px);
+            border-color: #64748b;
+        }
+
+        .container section:nth-of-type(2)>div:first-child p {
+            color: #34d399;
+        }
+
+        .container section:nth-of-type(2)>div:last-child p {
+            color: #fb7185;
+        }
+
+        .container section:nth-of-type(2) p {
+            font-size: 28px;
+            font-weight: 750;
+        }
+
+        /* Form Layout */
+        #transactionForm {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        #transactionForm input,
+        #transactionForm select {
+            width: 100%;
+            min-height: 48px;
+            padding: 13px 15px;
+            background: #0b1220;
+            color: #f1f5f9;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            outline: none;
+            font: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #transactionForm input::placeholder {
+            color: #64748b;
+        }
+
+        #transactionForm input:focus,
+        #transactionForm select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        #transactionForm select {
+            cursor: pointer;
+        }
+
+        #transactionForm select option {
+            background: #151c2c;
+            color: white;
+        }
+
+        /* Add Transaction Button */
+        #transactionForm button {
+            min-height: 48px;
+            border: none;
+            border-radius: 10px;
+            background: #6366f1;
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        #transactionForm button:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        #transactionForm button:active {
+            transform: scale(0.98);
+        }
+
+        /* Transaction History */
+        #transactionList {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #transactionList li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 16px;
+            background: #0b1220;
+            border: 1px solid #283449;
+            border-radius: 12px;
+            color: #e2e8f0;
+            overflow-wrap: anywhere;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 16px;
+                gap: 18px;
+            }
+
+            .container>h1 {
+                font-size: 29px;
+            }
+
+            .container section {
+                padding: 18px;
+            }
+
+            .container section:first-of-type {
+                padding: 24px;
+            }
+
+            .container section:first-of-type p {
+                font-size: 32px;
+            }
+
+            .container section:nth-of-type(2) {
+                gap: 12px;
+            }
+
+            .container section:nth-of-type(2)>div {
+                padding: 16px;
+                min-width: 0;
+            }
+
+            .container section:nth-of-type(2) h2 {
+                font-size: 14px;
+            }
+
+            .container section:nth-of-type(2) p {
+                font-size: 22px;
+                overflow-wrap: anywhere;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Expense Tracker</h1>
+        <p>Manage your money wisely.</p>
+        <section>
+            <h2>Total Balance</h2>
+            <p id="totalBalance">₹0</p>
+        </section>
+
+        <section>
+            <div>
+                <h2>Total Income</h2>
+                <p id="totalIncome">₹0</p>
+            </div>
+            <div>
+                <h2>Total Expenses</h2>
+                <p id="totalExpenses">₹0</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Add New Transaction</h2>
+            <form id="transactionForm">
+                <input required type="text" placeholder="e.g. Salary, Food, Shopping" id="transactionTitle">
+                <input required min="0.01" step="0.01" type="number" placeholder="Enter amount" id="transactionAmount">
+                <select id="transactionType" required>
+                    <option value="" disabled selected>Select Income or Expense</option>
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
+                </select>
+                <button type="submit">Add Transaction</button>
+
+            </form>
+        </section>
+
+        <section>
+            <h2>Transaction History</h2>
+            <ul id="transactionList"></ul>
+        </section>
+    </main>
+
+
+    <script>
+        const transactionForm = document.getElementById("transactionForm");
+        const transactionTitle = document.getElementById("transactionTitle");
+        const transactionAmount = document.getElementById("transactionAmount");
+        const transactionType = document.getElementById("transactionType");
+
+        const transactionList = document.getElementById("transactionList");
+        const totalBalance = document.getElementById("totalBalance");
+        const totalIncome = document.getElementById("totalIncome");
+        const totalExpenses = document.getElementById("totalExpenses");
+
+
+        let income = 0;
+        let expenses = 0;
+        let balance = 0;
+
+
+        const transactions = JSON.parse(
+            localStorage.getItem("transactions") || "[]"
+        );
+
+        transactionForm.addEventListener("submit", (event) => {
+
+
+            event.preventDefault()
+
+            let object = {
+                title: transactionTitle.value,
+                amount: Number(transactionAmount.value),
+                type: transactionType.value
+            };
+            transactions.push(object)
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+
+            transactionTitle.value = "";
+            transactionAmount.value = "";
+            transactionType.value = "";
+
+            const li = document.createElement("li");
+            li.classList.add(object.type.toLowerCase());
+            li.textContent = object.title + " ₹" + object.amount + "  " + object.type;
+            transactionList.appendChild(li)
+
+
+            if (object.type === "Income") {
+                income = income + object.amount;
+            } else if (object.type === "Expense") {
+                expenses = expenses + object.amount;
+            }
+
+            balance = income - expenses
+
+            totalIncome.textContent = "₹" + income;
+            totalExpenses.textContent = "₹" + expenses;
+            totalBalance.textContent = "₹" + balance;
+        })
+    </script>
+</body>
+
+</html>
